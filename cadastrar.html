@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interclasse Neon - Painel</title>
+    <style>
+/* --- Variáveis de Cor --- */
+:root {
+    --fundo-principal: #121212; /* Cinza Escuro / Quase Preto */
+    --fundo-secundario: #1e1e1e;
+    --verde-neon: #39ff14; /* Verde Limão / Neon */
+    --texto-claro: #f4f4f9;
+    --detalhe-cinza: #333333;
+    --borda-tabela: #2a2a2a;
+    --cor-vermelho: #ff3939; /* Para cartões ou ênfase negativa */
+    --cor-amarelo: #ffdd39; /* Para cartões amarelos */
+}
+
+/* --- Estilos Gerais --- */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: var(--fundo-principal);
+    color: var(--texto-claro);
+    display: flex; /* Para o layout de menu lateral */
+    min-height: 100vh;
+}
+
+#site-container {
+    display: flex;
+    width: 100%;
+}
+
+/* --- 1. Menu Lateral (Sidebar) --- */
+#menu-lateral {
+    width: 250px;
+    background-color: var(--fundo-secundario);
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--verde-neon);
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+#menu-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#menu-lateral li a {
+    display: block;
+    padding: 15px 20px;
+    color: var(--texto-claro);
+    text-decoration: none;
+    font-size: 1.1em;
+    border-left: 5px solid transparent;
+    transition: background-color 0.3s, border-left 0.3s;
+}
+
+#menu-lateral li a:hover {
+    background-color: var(--detalhe-cinza);
+    border-left-color: var(--verde-neon);
+}
+
+#menu-lateral li a.active {
+    background-color: var(--detalhe-cinza);
+    border-left-color: var(--verde-neon);
+    color: var(--verde-neon);
+    font-weight: bold;
+}
+
+#menu-lateral i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.separator {
+    height: 1px;
+    background-color: var(--detalhe-cinza);
+    margin: 15px 20px;
+}
+
+/* --- 2. Conteúdo Principal --- */
+#conteudo-principal {
+    flex-grow: 1;
+    padding: 40px;
+}
+
+/* Oculta todas as telas por padrão */
+.screen {
+    display: none;
+}
+
+/* Mostra apenas a tela ativa */
+.screen.active {
+    display: block;
+}
+
+.page-header h1 {
+    color: var(--verde-neon);
+    border-bottom: 2px solid var(--detalhe-cinza);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.card {
+    background-color: var(--fundo-secundario);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--detalhe-cinza);
+    transition: border-color 0.3s;
+}
+
+.card:hover {
+    border-color: var(--verde-neon);
+}
+
+.card h3 {
+    color: var(--verde-neon);
+    margin-top: 0;
+}
+
+.noticia-resumo {
+    background-color: var(--detalhe-cinza);
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.noticia-resumo a {
+    color: var(--verde-neon);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primario {
+    background-color: var(--verde-neon);
+    color: var(--fundo-principal);
+}
+
+.btn-primario:hover {
+    background-color: #55ff33;
+}
+
+.btn-secundario {
+    background-color: transparent;
+    border: 2px solid var(--verde-neon);
+    color: var(--verde-neon);
+}
+
+.btn-secundario:hover {
+    background-color: var(--verde-neon);
+    color: var(--fundo-principal);
+}
+
+/* --- Estilos de Tabela (Para Times, Estatísticas e Grupos) --- */
+.tabela-neon {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabela-neon thead th {
+    background-color: var(--verde-neon);
+    color: var(--fundo-principal);
+    padding: 12px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.tabela-neon tbody tr {
+    background-color: var(--fundo-secundario);
+    border-bottom: 1px solid var(--borda-tabela);
+}
+
+.tabela-neon tbody tr:nth-child(even) {
+    background-color: var(--detalhe-cinza);
+}
+
+.tabela-neon tbody tr:hover {
+    background-color: #2c2c2c;
+    color: var(--verde-neon);
+    cursor: pointer;
+}
+
+.tabela-neon td {
+    padding: 12px;
+    vertical-align: middle;
+}
+
+/* Estilo para a coluna de Posição/Ranking */
+.ranking {
+    font-weight: bold;
+    color: var(--verde-neon);
+    text-align: center;
+}
+
+/* Estilos de Gráficos/Cards para Estatísticas */
+.card-estatisticas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.card-estatisticas {
+    text-align: center;
+}
+
+.card-estatisticas .numero {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--verde-neon);
+    margin: 5px 0;
+}
+
+.card-estatisticas .titulo {
+    font-size: 1em;
+    text-transform: uppercase;
+    color: var(--texto-claro);
+}
+
+/* Estilos para Grupos (Abas) */
+.abas-grupo {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--detalhe-cinza);
+}
+
+.aba-btn {
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    color: var(--texto-claro);
+    font-size: 1.1em;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.3s, color 0.3s;
+}
+
+.aba-btn:hover {
+    color: var(--verde-neon);
+}
+
+.aba-btn.active {
+    border-bottom-color: var(--verde-neon);
+    color: var(--verde-neon);
+    font-weight: bold;
+}
+
+/* Garante que o conteúdo da aba se comporta corretamente */
+.conteudo-aba {
+    padding: 15px 0;
+    display: none; /* Oculta todos por padrão */
+}
+
+/* *** CORREÇÃO FINAL CSS: Alta Especificidade para forçar a exibição *** */
+[id="conteudo-detalhes"] .conteudo-aba.active,
+[id="conteudo-grupos"] .conteudo-aba.active,
+.auth-content.active {
+    display: block !important; 
+}
+
+
+/* Estilos Específicos do Jogo */
+
+.match-header {
+    background-color: var(--detalhe-cinza);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.team-info {
+    flex: 1;
+    text-align: center;
+}
+
+.team-info .team-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 10px;
+    color: var(--verde-neon);
+}
+
+.score {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--texto-claro);
+    margin: 0 20px;
+}
+
+.match-details {
+    color: var(--texto-claro);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Estilo para a barra de estatísticas como no print do celular */
+.stat-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.stat-label {
+    width: 150px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.bar-container {
+    flex-grow: 1;
+    display: flex;
+    height: 20px;
+    background-color: var(--fundo-secundario);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bar-team-1 {
+    background-color: var(--cor-vermelho); /* Cor para o time da esquerda */
+}
+
+.bar-team-2 {
+    background-color: var(--verde-neon); /* Cor para o time da direita */
+}
+
+.stat-value {
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.team-list-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.player-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.player-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--detalhe-cinza);
+    display: flex;
+    justify-content: space-between;
+}
+
+.player-list li:last-child {
+    border-bottom: none;
+}
+
+.card-icon {
+    margin-left: 5px;
+}
+
+/* --- Estilos para Login/Cadastro e Perfil (NOVOS ESTILOS) --- */
+/* Estilos de Formulário Geral */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--verde-neon);
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--detalhe-cinza);
+    border-radius: 4px;
+    background-color: var(--fundo-principal);
+    color: var(--texto-claro);
+    box-sizing: border-box; /* Garante que o padding não aumente a largura */
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--verde-neon);
+}
+
+/* Estilos para as Abas de Login/Cadastro */
+.tabs-auth {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--detalhe-cinza);
+}
+
+.auth-tab-btn {
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    color: var(--texto-claro);
+    font-size: 1.1em;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.3s, color 0.3s;
+}
+
+.auth-tab-btn:hover {
+    color: var(--verde-neon);
+}
+
+.auth-tab-btn.active {
+    border-bottom-color: var(--verde-neon);
+    color: var(--verde-neon);
+    font-weight: bold;
+}
+
+.auth-content:not(.active) {
+    display: none;
+}
+
+/* Estilos de Perfil */
+.profile-info p {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--detalhe-cinza);
+}
+.profile-info p:last-child {
+    border-bottom: none;
+}
+
+
+/* --- Responsividade Básica (Para telas menores) --- */
+@media (max-width: 768px) {
+    #site-container {
+        flex-direction: column;
+    }
+
+    #menu-lateral {
+        width: 100%;
+        height: auto;
+        flex-direction: row; /* Faz o menu ficar na horizontal no mobile */
+        justify-content: space-around;
+        padding: 10px 0;
+        position: sticky; /* Fica no topo ao rolar */
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        display: none; /* Esconde o logo para economizar espaço */
+    }
+
+    #menu-lateral ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #menu-lateral li {
+        flex-grow: 1; /* Distribui os itens igualmente */
+        text-align: center;
+    }
+    
+    #menu-lateral li a {
+        padding: 10px 8px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        font-size: 0.9em;
+    }
+    
+    #menu-lateral li a:hover, #menu-lateral li a.active {
+        border-left: none;
+        border-bottom-color: var(--verde-neon);
+    }
+    
+    #menu-lateral i {
+        margin-right: 0;
+        display: block; /* Coloca o ícone acima do texto no mobile */
+    }
+
+    .separator, .auth-link {
+        display: none; /* Esconde alguns itens no menu mobile para simplificar */
+    }
+    
+    #conteudo-principal {
+        padding: 20px;
+    }
+
+    .tabela-neon, .tabela-neon tbody, .tabela-neon tr, .tabela-neon td {
+        display: block;
+    }
+
+    .tabela-neon thead {
+        display: none;
+    }
+
+    .tabela-neon tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--borda-tabela);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .tabela-neon td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .tabela-neon td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: var(--verde-neon);
+    }
+
+    .team-list-grid {
+        grid-template-columns: 1fr; /* Coluna única no mobile */
+    }
+    
+    .stat-bar {
+        flex-direction: column;
+    }
+
+    .stat-label, .stat-value {
+        width: 100%;
+        text-align: center;
+    }
+
+    .stat-value {
+        margin-top: 5px;
+    }
+
+    .bar-container {
+        margin-top: 5px;
+    }
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <div id="site-container">
+
+        <nav id="menu-lateral">
+            <div class="logo">
+                INTERCLASSE CELC
+            </div>
+            
+            <ul>
+                <li><a href="#inicio" data-target="tela-inicio" class="active"><i class="fas fa-home"></i> Início</a></li>
+                <li><a href="#times" data-target="tela-times"><i class="fas fa-users"></i> Times</a></li>
+                <li><a href="#jogos" data-target="tela-jogos"><i class="fas fa-calendar-alt"></i> Jogos</a></li>
+                <li><a href="#estatisticas" data-target="tela-estatisticas"><i class="fas fa-trophy"></i> Estatísticas</a></li>
+                <li><a href="#grupos" data-target="tela-grupos"><i class="fas fa-list-ol"></i> Grupos</a></li>
+                
+                <li class="separator"></li>
+                
+                <li><a href="#" data-target="tela-meu-perfil"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li class="auth-link"><a href="#" data-target="tela-login"><i class="fas fa-sign-in-alt"></i> Login / Cadastro</a></li>
+            </ul>
+        </nav>
+
+        <main id="conteudo-principal">
+
+            <section class="screen active" id="tela-inicio">
+                <header class="page-header">
+                    <h1>Bem-vindo ao Interclasse CELC 2025!</h1>
+                </header>
+    
+                <section class="painel-principal">
+                    <h2>Destaques</h2>
+                    
+                    <div class="card-grid">
+                        <div class="card">
+                            <h3>Próximo Jogo</h3>
+                            <p>Los Bravos vs Negritos - 17/12</p>
+                            <button class="btn-primario" id="btn-ver-detalhes">Ver Detalhes</button>
+                        </div>
+                        <div class="card">
+                            <h3>Artilheiro</h3>
+                            <p>Vitor (Los Bravos) - 10 Gols</p>
+                            <button class="btn-secundario" data-target="tela-estatisticas">Ver Estatísticas</button>
+                        </div>
+                    </div>
+    
+                    <div class="noticia-resumo">
+                        <h4>Los Bravos x Negritos!</h4>
+                        <p>A equipe Los Bravos enfrentará a equipe Negritos na abertura do campeonato...</p>
+                        <a href="#">Ler mais <i class="fas fa-chevron-right"></i></a>
+                    </div>
+    
+                </section>
+            </section>
+            
+            <section class="screen" id="tela-detalhes-jogo">
+                <header class="page-header">
+                    <h1>Detalhes do Jogo: Rodada 1</h1>
+                </header>
+
+                <div class="match-header">
+                    <div class="team-info">
+                        <i class="fas fa-shield-alt fa-3x" style="color: var(--cor-vermelho);"></i>
+                        <div class="team-name">Los Bravos</div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <div class="score">4 X 2</div>
+                        <div class="match-details">Grupo B | 19, Dez 25 | FIM</div>
+                    </div>
+
+                    <div class="team-info">
+                        <i class="fas fa-shield-alt fa-3x" style="color: var(--verde-neon);"></i>
+                        <div class="team-name">Negritos</div>
+                    </div>
+                </div>
+
+
+                <div class="abas-grupo" id="abas-detalhes-jogo">
+                    <button class="aba-btn active" data-aba-detalhe="estatisticas">Estatísticas</button>
+                    <button class="aba-btn" data-aba-detalhe="equipes">Equipes</button>
+                    <button class="aba-btn" data-aba-detalhe="classificacao">Classificação</button>
+                </div>
+
+                <div id="conteudo-detalhes">
+                    
+                    <div class="conteudo-aba active" data-aba-conteudo="estatisticas">
+                        <div class="card">
+                            <h3>Comparativo do Jogo</h3>
+
+                            <div class="stat-label" style="width: auto; margin: 0 auto 20px;">GOLS</div>
+                            <div class="stat-bar">
+                                <div class="stat-value">4</div>
+                                <div class="bar-container">
+                                    <div class="bar-team-1" style="width: 66%;"></div>
+                                    <div class="bar-team-2" style="width: 33%;"></div>
+                                </div>
+                                <div class="stat-value">2</div>
+                            </div>
+                            
+                            <div class="stat-label" style="width: auto; margin: 0 auto 20px;">CHUTES</div>
+                            <div class="stat-bar">
+                                <div class="stat-value">15</div>
+                                <div class="bar-container">
+                                    <div class="bar-team-1" style="width: 55%;"></div>
+                                    <div class="bar-team-2" style="width: 45%;"></div>
+                                </div>
+                                <div class="stat-value">12</div>
+                            </div>
+                            
+                            <div class="stat-label" style="width: auto; margin: 0 auto 20px;">CHUTES AO GOL</div>
+                            <div class="stat-bar">
+                                <div class="stat-value">8</div>
+                                <div class="bar-container">
+                                    <div class="bar-team-1" style="width: 70%;"></div>
+                                    <div class="bar-team-2" style="width: 30%;"></div>
+                                </div>
+                                <div class="stat-value">3</div>
+                            </div>
+                            
+                            <div class="stat-label" style="width: auto; margin: 0 auto 0;">CARTÕES (Amarelos)</div>
+                            <br>
+                            <div class="stat-bar">
+                                <div class="stat-value">2</div>
+                                <div class="bar-container">
+                                    <div class="bar-team-1" style="width: 50%; background-color: var(--cor-amarelo);"></div>
+                                    <div class="bar-team-2" style="width: 50%; background-color: var(--cor-amarelo);"></div>
+                                </div>
+                                <div class="stat-value">2</div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                    
+                    <div class="conteudo-aba" data-aba-conteudo="equipes">
+                        
+                        <div class="team-list-grid">
+                            <div class="card player-list">
+                                <h3>Los Bravos</h3>
+                                <ul>
+                                    <li>01. JOAO <i class="fas fa-futbol" style="color: var(--verde-neon);"></i><i class="fas fa-futbol" style="color: var(--verde-neon);"></i></li>
+                                    <li>02. JOAO</li>
+                                    <li>03. JOAO <i class="fas fa-futbol" style="color: var(--verde-neon);"></i></li>
+                                    <li>04. JOAO <i class="fas fa-id-card" style="color: var(--cor-amarelo);"></i></li>
+                                    <li>05. JOAO <i class="fas fa-futbol" style="color: var(--verde-neon);"></i></li>
+                                    <li>06. JOAO</li>
+                                    <li>07. JOAO <i class="fas fa-id-card" style="color: var(--cor-amarelo);"></i></li>
+                                </ul>
+                            </div>
+
+                            <div class="card player-list">
+                                <h3>Negritos</h3>
+                                <ul>
+                                    <li>01. JOAO</li>
+                                    <li>02. JOAO <i class="fas fa-id-card" style="color: var(--cor-amarelo);"></i></li>
+                                    <li>03. JOAO <i class="fas fa-futbol" style="color: var(--verde-neon);"></i></li>
+                                    <li>04. JOAO</li>
+                                    <li>05. JOAO <i class="fas fa-futbol" style="color: var(--verde-neon);"></i></li>
+                                    <li>06. JOAO <i class="fas fa-id-card" style="color: var(--cor-amarelo);"></i></li>
+                                    <li>07. JOAO</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conteudo-aba" data-aba-conteudo="classificacao">
+                        <h3>Grupo B - Tabela Atualizada</h3>
+                        <table class="tabela-neon">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Time</th>
+                                    <th>P</th>
+                                    <th>J</th>
+                                    <th>V</th>
+                                    <th>E</th>
+                                    <th>D</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="#" class="ranking">1</td>
+                                    <td data-label="Time">Los Bravos</td>
+                                    <td data-label="P">3</td>
+                                    <td data-label="J">1</td>
+                                    <td data-label="V">1</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">0</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">2</td>
+                                    <td data-label="Time">Velha Guarda</td>
+                                    <td data-label="P">0</td>
+                                    <td data-label="J">0</td>
+                                    <td data-label="V">0</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">0</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">3</td>
+                                    <td data-label="Time">Galáticos</td>
+                                    <td data-label="P">0</td>
+                                    <td data-label="J">0</td>
+                                    <td data-label="V">0</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">0</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">4</td>
+                                    <td data-label="Time">Negritos</td>
+                                    <td data-label="P">0</td>
+                                    <td data-label="J">1</td>
+                                    <td data-label="V">0</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+            
+            <section class="screen" id="tela-times">
+                <header class="page-header">
+                    <h1>Lista de Times</h1>
+                </header>
+
+                <table class="tabela-neon">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Time</th>
+                            <th>Série</th>
+                            <th>Capitão</th>
+                            <th>Vitórias</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="#" class="ranking">1</td>
+                            <td data-label="Time">Los Bravos</td>
+                            <td data-label="Série">2º DSB</td>
+                            <td data-label="Capitão">Jonas</td>
+                            <td data-label="Vitórias">1</td>
+                        </tr>
+                        <tr>
+                            <td data-label="#" class="ranking">2</td>
+                            <td data-label="Time">Negritos</td>
+                            <td data-label="Série">2º ADM</td>
+                            <td data-label="Capitão">Bruno</td>
+                            <td data-label="Vitórias">0</td>
+                        </tr>
+                        <tr>
+                            <td data-label="#" class="ranking">3</td>
+                            <td data-label="Time">Galáticos</td>
+                            <td data-label="Série">2º B</td>
+                            <td data-label="Capitão">Bressan</td>
+                            <td data-label="Vitórias">0</td>
+                        </tr>
+                        <tr>
+                            <td data-label="#" class="ranking">4</td>
+                            <td data-label="Time">Velha Guarda</td>
+                            <td data-label="Série">3º C</td>
+                            <td data-label="Capitão">Anastácio</td>
+                            <td data-label="Vitórias">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section class="screen" id="tela-jogos">
+                <header class="page-header">
+                    <h1>Agenda e Resultados</h1>
+                </header>
+
+                <div class="card">
+                    <h3>Próximos Jogos</h3>
+                    <ul>
+                        <li><i class="fas fa-circle-notch" style="color: var(--verde-neon);"></i> Los Bravos x Negritos - 17/12 (10:00)</li>
+                        <li><i class="fas fa-circle-notch" style="color: var(--verde-neon);"></i> Velha Guarda x Galáticos - 17/12 (11:00)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="screen" id="tela-estatisticas">
+                <header class="page-header">
+                    <h1>Estatísticas do Campeonato</h1>
+                </header>
+
+                <h2>Resumo Geral</h2>
+                <div class="card-estatisticas-grid">
+                    <div class="card card-estatisticas">
+                        <p class="numero">12</p>
+                        <p class="titulo">Times Inscritos</p>
+                    </div>
+                    <div class="card card-estatisticas">
+                        <p class="numero">18</p>
+                        <p class="titulo">Jogos Realizados</p>
+                    </div>
+                    <div class="card card-estatisticas">
+                        <p class="numero">75</p>
+                        <p class="titulo">Gols Marcados</p>
+                    </div>
+                    <div class="card card-estatisticas">
+                        <p class="numero">4</p>
+                        <p class="titulo">Rodadas Restantes</p>
+                    </div>
+                </div>
+
+                <h2>Top Artilheiros</h2>
+                <table class="tabela-neon">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Jogador</th>
+                            <th>Time</th>
+                            <th>Gols</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="#" class="ranking">1</td>
+                            <td data-label="Jogador">Vitor M.</td>
+                            <td data-label="Time">Los Bravos</td>
+                            <td data-label="Gols">10</td>
+                        </tr>
+                        <tr>
+                            <td data-label="#" class="ranking">2</td>
+                            <td data-label="Jogador">Gabriel S.</td>
+                            <td data-label="Time">Negritos</td>
+                            <td data-label="Gols">8</td>
+                        </tr>
+                        <tr>
+                            <td data-label="#" class="ranking">3</td>
+                            <td data-label="Jogador">Pedrinho</td>
+                            <td data-label="Time">Galáticos</td>
+                            <td data-label="Gols">6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="screen" id="tela-grupos">
+                <header class="page-header">
+                    <h1>Fase de Grupos</h1>
+                </header>
+
+                <div class="abas-grupo" id="abas-grupos">
+                    <button class="aba-btn active" data-grupo="A">Grupo A</button>
+                    <button class="aba-btn" data-grupo="B">Grupo B</button>
+                    <button class="aba-btn" data-grupo="C">Grupo C</button>
+                </div>
+
+                <div id="conteudo-grupos">
+                    <div class="conteudo-aba active" data-grupo-conteudo="A">
+                        <table class="tabela-neon">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Time</th>
+                                    <th>P</th>
+                                    <th>J</th>
+                                    <th>V</th>
+                                    <th>E</th>
+                                    <th>D</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="#" class="ranking">1</td>
+                                    <td data-label="Time">Los Bravos</td>
+                                    <td data-label="P">9</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">3</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">0</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">2</td>
+                                    <td data-label="Time">Velha Guarda</td>
+                                    <td data-label="P">6</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">2</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">1</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">3</td>
+                                    <td data-label="Time">Galáticos</td>
+                                    <td data-label="P">3</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">1</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">2</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">4</td>
+                                    <td data-label="Time">Negritos</td>
+                                    <td data-label="P">0</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">0</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="conteudo-aba" data-grupo-conteudo="B">
+                         <table class="tabela-neon">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Time</th>
+                                    <th>P</th>
+                                    <th>J</th>
+                                    <th>V</th>
+                                    <th>E</th>
+                                    <th>D</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="#" class="ranking">1</td>
+                                    <td data-label="Time">Os Melhores</td>
+                                    <td data-label="P">7</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">2</td>
+                                    <td data-label="E">1</td>
+                                    <td data-label="D">0</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">2</td>
+                                    <td data-label="Time">Fênix</td>
+                                    <td data-label="P">4</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">1</td>
+                                    <td data-label="E">1</td>
+                                    <td data-label="D">1</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">3</td>
+                                    <td data-label="Time">Dragões</td>
+                                    <td data-label="P">3</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">1</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">2</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">4</td>
+                                    <td data-label="Time">Raio-X</td>
+                                    <td data-label="P">3</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">1</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="conteudo-aba" data-grupo-conteudo="C">
+                         <table class="tabela-neon">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Time</th>
+                                    <th>P</th>
+                                    <th>J</th>
+                                    <th>V</th>
+                                    <th>E</th>
+                                    <th>D</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="#" class="ranking">1</td>
+                                    <td data-label="Time">Os Gigantes</td>
+                                    <td data-label="P">9</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">3</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">0</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">2</td>
+                                    <td data-label="Time">Troianos</td>
+                                    <td data-label="P">6</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">2</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">1</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">3</td>
+                                    <td data-label="Time">Esquadrão</td>
+                                    <td data-label="P">3</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">1</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">2</td>
+                                </tr>
+                                <tr>
+                                    <td data-label="#" class="ranking">4</td>
+                                    <td data-label="Time">Águias</td>
+                                    <td data-label="P">0</td>
+                                    <td data-label="J">3</td>
+                                    <td data-label="V">0</td>
+                                    <td data-label="E">0</td>
+                                    <td data-label="D">3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="screen" id="tela-meu-perfil">
+                <header class="page-header">
+                    <h1>Meu Perfil 👤</h1>
+                </header>
+                <div class="card profile-info">
+                    <h3>Informações Pessoais</h3>
+                    <p><strong>Nome:</strong> João da Silva</p>
+                    <p><strong>E-mail:</strong> joao.silva@escola.br</p>
+                    <p><strong>Série/Turma:</strong> 2º DSB</p>
+                    
+                    <h3 style="margin-top: 20px;">Estatísticas Pessoais</h3>
+                    <p><strong>Time:</strong> Los Bravos</p>
+                    <p><strong>Gols Marcados:</strong> 4</p>
+                    <p><strong>Cartões Amarelos:</strong> 1</p>
+                    <p><strong>Jogos Disputados:</strong> 3</p>
+
+                    <button class="btn-secundario">Editar Perfil</button>
+                    <button class="btn-primario" style="background-color: var(--cor-vermelho); margin-left: 10px;">Sair</button>
+                </div>
+            </section>
+            
+            <section class="screen" id="tela-login">
+                <header class="page-header">
+                    <h1>Acesso do Usuário</h1>
+                </header>
+
+                <div class="tabs-auth">
+                    <button class="auth-tab-btn active" data-auth="login">Login</button>
+                    <button class="auth-tab-btn" data-auth="cadastro">Cadastro</button>
+                </div>
+
+                <div class="auth-container">
+                    
+                    <div class="auth-content active" data-auth-conteudo="login">
+                        <div class="card">
+                            <form>
+                                <h2>Fazer Login</h2>
+                                <div class="form-group">
+                                    <label for="login-email">E-mail</label>
+                                    <input type="email" id="login-email" placeholder="Seu e-mail" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="login-senha">Senha</label>
+                                    <input type="password" id="login-senha" placeholder="Sua senha" required>
+                                </div>
+                                <button type="submit" class="btn-primario">Entrar</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="auth-content" data-auth-conteudo="cadastro">
+                        <div class="card">
+                            <form>
+                                <h2>Criar Nova Conta</h2>
+                                <div class="form-group">
+                                    <label for="cadastro-nome">Nome Completo</label>
+                                    <input type="text" id="cadastro-nome" placeholder="Seu nome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cadastro-email">E-mail</label>
+                                    <input type="email" id="cadastro-email" placeholder="Seu e-mail" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cadastro-senha">Senha</label>
+                                    <input type="password" id="cadastro-senha" placeholder="Crie uma senha" required>
+                                </div>
+                                <button type="submit" class="btn-primario">Cadastrar</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuLinks = document.querySelectorAll('#menu-lateral a[data-target]');
+            const contentScreens = document.querySelectorAll('.screen');
+            const abasDetalhesJogoBtns = document.querySelectorAll('#abas-detalhes-jogo .aba-btn');
+            const abasGruposBtns = document.querySelectorAll('#abas-grupos .aba-btn');
+            const authTabBtns = document.querySelectorAll('.auth-tab-btn');
+            const btnVerDetalhes = document.getElementById('btn-ver-detalhes');
+            
+            // Função para alternar as telas
+            const switchScreen = (targetId) => {
+                contentScreens.forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                const targetScreen = document.getElementById(targetId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                }
+
+                // Atualiza o estado "active" no menu
+                menuLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-target') === targetId) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+
+            // Listener para os links do menu
+            menuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-target');
+                    if (targetId) {
+                        switchScreen(targetId);
+                    }
+                });
+            });
+
+            // Listener para o botão "Ver Detalhes" na tela de Início
+            if (btnVerDetalhes) {
+                btnVerDetalhes.addEventListener('click', () => {
+                    switchScreen('tela-detalhes-jogo');
+                });
+            }
+            
+            // Função para alternar abas de Detalhes do Jogo
+            abasDetalhesJogoBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetAba = btn.getAttribute('data-aba-detalhe');
+                    
+                    abasDetalhesJogoBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    document.querySelectorAll('#conteudo-detalhes .conteudo-aba').forEach(conteudo => {
+                        conteudo.classList.remove('active');
+                    });
+                    
+                    const targetConteudo = document.querySelector(`#conteudo-detalhes .conteudo-aba[data-aba-conteudo="${targetAba}"]`);
+                    if (targetConteudo) {
+                        targetConteudo.classList.add('active');
+                    }
+                });
+            });
+
+            // Função para alternar abas de Grupos
+            abasGruposBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetGrupo = btn.getAttribute('data-grupo');
+                    
+                    abasGruposBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    document.querySelectorAll('#conteudo-grupos .conteudo-aba').forEach(conteudo => {
+                        conteudo.classList.remove('active');
+                    });
+                    
+                    const targetConteudo = document.querySelector(`#conteudo-grupos .conteudo-aba[data-grupo-conteudo="${targetGrupo}"]`);
+                    if (targetConteudo) {
+                        targetConteudo.classList.add('active');
+                    }
+                });
+            });
+            
+            // Função para alternar abas de Login/Cadastro
+            authTabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetAuth = btn.getAttribute('data-auth');
+                    
+                    authTabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    document.querySelectorAll('.auth-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    const targetContent = document.querySelector(`.auth-content[data-auth-conteudo="${targetAuth}"]`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+            
+            // Inicializa a tela correta (caso o usuário clique em um link secundário que leve a uma tela não ativa)
+            const initialTarget = document.querySelector('#menu-lateral a.active')?.getAttribute('data-target');
+            if (initialTarget) {
+                switchScreen(initialTarget);
+            }
+        });
+    </script>
+</body>
+</html>

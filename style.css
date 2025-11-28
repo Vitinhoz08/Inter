@@ -1,0 +1,232 @@
+/* --- Variáveis de Cor --- */
+:root {
+    --fundo-principal: #121212; /* Cinza Escuro / Quase Preto */
+    --fundo-secundario: #1e1e1e;
+    --verde-neon: #39ff14;      /* Verde Limão / Neon */
+    --texto-claro: #f4f4f9;
+    --detalhe-cinza: #333333;
+}
+
+/* --- Estilos Gerais --- */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    background-color: var(--fundo-principal);
+    color: var(--texto-claro);
+    display: flex; /* Para o layout de menu lateral */
+    min-height: 100vh;
+}
+
+#site-container {
+    display: flex;
+    width: 100%;
+}
+
+/* --- 1. Menu Lateral (Sidebar) --- */
+#menu-lateral {
+    width: 250px;
+    background-color: var(--fundo-secundario);
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--verde-neon);
+    text-align: center;
+    padding-bottom: 30px;
+    text-shadow: 0 0 5px var(--verde-neon);
+}
+
+#menu-lateral ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#menu-lateral li a {
+    display: block;
+    padding: 15px 20px;
+    color: var(--texto-claro);
+    text-decoration: none;
+    font-size: 1.1em;
+    border-left: 5px solid transparent;
+    transition: background-color 0.3s, border-left 0.3s;
+}
+
+#menu-lateral li a:hover {
+    background-color: var(--detalhe-cinza);
+    border-left-color: var(--verde-neon);
+}
+
+#menu-lateral li a.active {
+    background-color: var(--detalhe-cinza);
+    border-left-color: var(--verde-neon);
+    color: var(--verde-neon);
+    font-weight: bold;
+}
+
+#menu-lateral i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.separator {
+    height: 1px;
+    background-color: var(--detalhe-cinza);
+    margin: 15px 20px;
+}
+
+/* --- 2. Conteúdo Principal --- */
+#conteudo-principal {
+    flex-grow: 1;
+    padding: 40px;
+}
+
+.page-header h1 {
+    color: var(--verde-neon);
+    border-bottom: 2px solid var(--detalhe-cinza);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* --- Estilos dos Cards (Times, Notícias, etc.) --- */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.card {
+    background-color: var(--fundo-secundario);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--detalhe-cinza);
+    transition: border-color 0.3s;
+}
+
+.card:hover {
+    border-color: var(--verde-neon);
+}
+
+.card h3 {
+    color: var(--verde-neon);
+    margin-top: 0;
+}
+
+.noticia-resumo {
+    background-color: var(--detalhe-cinza);
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+.noticia-resumo a {
+    color: var(--verde-neon);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* --- Botões --- */
+button {
+    cursor: pointer;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primario {
+    background-color: var(--verde-neon);
+    color: var(--fundo-principal);
+}
+
+.btn-primario:hover {
+    background-color: #55ff33; /* Verde um pouco mais claro */
+}
+
+.btn-secundario {
+    background-color: transparent;
+    border: 2px solid var(--verde-neon);
+    color: var(--verde-neon);
+}
+
+.btn-secundario:hover {
+    background-color: var(--verde-neon);
+    color: var(--fundo-principal);
+}
+
+.btn-voltar {
+    background-color: var(--detalhe-cinza);
+    color: var(--texto-claro);
+    margin-bottom: 20px;
+    padding: 8px 12px;
+}
+
+.btn-voltar:hover {
+    background-color: #444;
+}
+
+/* --- Responsividade Básica (Para telas menores) --- */
+@media (max-width: 768px) {
+    #site-container {
+        flex-direction: column;
+    }
+
+    #menu-lateral {
+        width: 100%;
+        height: auto;
+        flex-direction: row; /* Faz o menu ficar na horizontal no mobile */
+        justify-content: space-around;
+        padding: 10px 0;
+        position: sticky; /* Fica no topo ao rolar */
+        top: 0;
+        z-index: 100;
+    }
+
+    .logo {
+        display: none; /* Esconde o logo para economizar espaço */
+    }
+
+    #menu-lateral ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #menu-lateral li {
+        flex-grow: 1; /* Distribui os itens igualmente */
+        text-align: center;
+    }
+    
+    #menu-lateral li a {
+        padding: 10px 8px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        font-size: 0.9em;
+    }
+    
+    #menu-lateral li a:hover, #menu-lateral li a.active {
+        border-left: none;
+        border-bottom-color: var(--verde-neon);
+    }
+    
+    #menu-lateral i {
+        margin-right: 0;
+        display: block; /* Coloca o ícone acima do texto no mobile */
+    }
+
+    .separator, .auth-link {
+        display: none; /* Esconde alguns itens no menu mobile para simplificar */
+    }
+    
+    #conteudo-principal {
+        padding: 20px;
+    }
+}
